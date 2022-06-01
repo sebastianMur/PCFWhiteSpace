@@ -10,6 +10,7 @@
     "refreshTypes": "pcf-scripts refreshTypes"
   },
   "dependencies": {
+    "@fluentui/example-data": "^8.4.1",
     "@fluentui/react": "^8.72.0",
     "@types/react": "^17.0.45",
     "@types/react-dom": "^18.0.5",
