@@ -2,20 +2,17 @@ import { IInputs, IOutputs } from './generated/ManifestTypes';
 import DataSetInterfaces = ComponentFramework.PropertyHelper.DataSetApi;
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import {
-  WhiteSpaceTable,
-  IWhiteSpaceTableState,
-} from './Control/WhiteSpacePCF';
+import { container } from './components/whitespace_container/container';
 
 type DataSet = ComponentFramework.PropertyTypes.DataSet;
 
 export class WhiteSpaceComponent
   implements ComponentFramework.StandardControl<IInputs, IOutputs>
 {
-  public _container: HTMLDivElement;
-  public _context: ComponentFramework.Context<IInputs>;
-  public _notifyOutputChanged = () => {};
-  public _state = {};
+  private _container: HTMLDivElement;
+  private _label: any;
+  private _context: ComponentFramework.Context<IInputs>;
+  private _notifyOutputChanged = () => {};
   /**
    * Empty constructor.
    */
@@ -38,7 +35,7 @@ export class WhiteSpaceComponent
     this._container = container;
     this._context = context;
     this._notifyOutputChanged = notifyOutputChanged;
-    this._state = { sortedItems: null, columns: null };
+    this._container.setAttribute('class', 'container');
   }
 
   /**
@@ -46,8 +43,13 @@ export class WhiteSpaceComponent
    * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
    */
   public updateView(context: ComponentFramework.Context<IInputs>): void {
-    console.log(context);
-    ReactDOM.render(React.createElement(WhiteSpaceTable, {}), this._container);
+    console.log(this._context.parameters.Data.columns[0].displayName);
+    ReactDOM.render(
+      React.createElement(container, {
+        context: this._context,
+      }),
+      this._container,
+    );
   }
 
   /**
