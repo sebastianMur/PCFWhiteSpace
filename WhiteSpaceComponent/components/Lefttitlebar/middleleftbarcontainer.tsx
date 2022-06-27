@@ -1,5 +1,3 @@
 import styled from 'styled-components';
 
-export const MiddleLeftBarContainer = styled.div`
-  grid-row: 2 / 3;
-`;
+export const MiddleLeftBarContainer = styled.div``;

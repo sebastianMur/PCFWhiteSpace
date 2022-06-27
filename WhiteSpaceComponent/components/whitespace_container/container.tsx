@@ -1,45 +1,76 @@
 import * as React from 'react';
+import { useState, useEffect } from 'react';
 import { TableContainer } from '../whitespace_table/tablecontainer';
 import { LeftTitlesBar } from '../Lefttitlebar';
-import { portafolioLinesTestData } from '../../data/portafoliolines';
 import { Wrapper } from './wrapper';
-import { RetrievePortafolioLine } from '../../Control/retrieveData';
+import AppContext from '../../context/AppContext';
+import { DropdownRequiredYear } from '../../components/YearSelector';
+import useApi from '../../hooks/ApiCalls';
+import { GetCurrentHistoryWhitespace } from '../../services/history whitespace/getCurrentHistory';
+import { currenthistorydata } from '../../data/currenthistory';
 
 export const container = (props: any) => {
+  const getCurrentHistoryWhitespace = useApi(GetCurrentHistoryWhitespace);
   const { context } = props;
-  const portafoliolinesFilter = portafolioLinesTestData.entities.filter(
-    row => row.swo_enable,
-  );
+  const [historyWhistespaceRecord, setHistoryWhitespaceRecord] = useState();
+  const ApplicationContext = {
+    context,
+  };
+
+  useEffect(() => {
+    getCurrentHistoryWhitespace.request(context);
+  }, []);
+
+  const SelectHandle = (e: any, recordsHistoryWhitespace: any) => {
+    const [historyRecord] = recordsHistoryWhitespace.entities.filter(
+      (record: any) => record['swo_historywhitespaceapid'] === e.target.value,
+    );
+
+    setHistoryWhitespaceRecord(historyRecord);
+  };
+
+  const table = (
+    historyWhitespaceRecord: any,
+    defaultHistoryWhitespace: any,
+  ) => {
+    const { entities } = defaultHistoryWhitespace;
+    const [currentHistoryWhitespace] = entities;
+
+    const historyRecord = historyWhitespaceRecord
+      ? historyWhitespaceRecord
+      : currentHistoryWhitespace;
+
+    return (
+      <>
+        <DropdownRequiredYear
+          historyWhistespaceRecord={historyRecord}
+          SelectHandle={SelectHandle}
+        />
+        <LeftTitlesBar historyRecord={historyRecord} className='left-bar' />
+        <TableContainer
+          name='Transactional Business'
+          className='transactional-business'
+          historyRecord={historyRecord}
+          context={props.context}
+        />
+        <TableContainer
+          name='Service Lines'
+          className='service-lines'
+          historyRecord={historyRecord}
+          context={props.context}
+        />
+      </>
+    );
+  };
 
   return (
     <Wrapper className='wrapper-container'>
-      <LeftTitlesBar className='left-title-bar' />
-      <TableContainer
-        data={[
-          {
-            'Portafolio Line': '',
-            'Practice Layer': 'Microsoft (MS)',
-            Enable: true,
-            'Created On': ['6/3/2022 8:13:16 AM', '6/3/2022 8:13:16 AM'],
-          },
-          {
-            'Portafolio Line': '',
-            'Practice Layer': 'Multivendor (MV)',
-            Enable: true,
-            'Created On': ['6/3/2022 8:13:16 AM', '6/3/2022 8:13:16 AM'],
-          },
-        ]}
-        name='Transactional Business'
-        className='transactional-business col-5'
-      />
-
-      <TableContainer
-        data={portafoliolinesFilter}
-        name='Service Lines'
-        className='service-lines col-2'
-      />
-
-      <RetrievePortafolioLine context={context} />
+      <AppContext.Provider value={ApplicationContext}>
+        {getCurrentHistoryWhitespace.data &&
+          table(historyWhistespaceRecord, getCurrentHistoryWhitespace.data)}
+        {getCurrentHistoryWhitespace.error &&
+          table(historyWhistespaceRecord, currenthistorydata)}
+      </AppContext.Provider>
     </Wrapper>
   );
 };

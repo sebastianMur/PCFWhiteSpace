@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 
-export const Wrapper = styled.select`
-  margin-top: 5px;
-  margin-left: 15px;
-  height: 30px;
-  width: 60px;
+export const Wrapper = styled.div`
+  justify-self: center;
+  display: flex;
+  background-color: red;
+  justify-content: center;
+  width: 100%;
+
+  .select-currency {
+    text-align: center;
+    width: 50%;
+  }
 `;

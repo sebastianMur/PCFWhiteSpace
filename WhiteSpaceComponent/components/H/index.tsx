@@ -3,8 +3,8 @@ import { Wrapper } from './wrapper';
 
 export const H = (props: any) => {
   return (
-    <div>
-      <Wrapper>{props.name}</Wrapper>
-    </div>
+    <Wrapper>
+      <h3>{props.name}</h3>
+    </Wrapper>
   );
 };

@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
 export const Wrapper = styled.table`
-  background-color: white;
+  margin-top: 10px;
+  tbody {
+    text-align: center;
+  }
 `;

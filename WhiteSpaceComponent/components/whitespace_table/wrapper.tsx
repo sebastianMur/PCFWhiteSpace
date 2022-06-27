@@ -5,5 +5,5 @@ interface DivProps {
 }
 
 export const Wrapper = styled.div<DivProps>`
-  grid-column-end: ${(props: any) => props.colSpan};
+  grid-column: auto / ${(props: any) => props.colSpan};
 `;

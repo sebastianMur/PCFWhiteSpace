@@ -43,7 +43,6 @@ export class WhiteSpaceComponent
    * @param context The entire property bag available to control via Context Object; It contains values as set up by the customizer mapped to names defined in the manifest, as well as utility functions
    */
   public updateView(context: ComponentFramework.Context<IInputs>): void {
-    console.log(this._context.parameters.Data.columns[0].displayName);
     ReactDOM.render(
       React.createElement(container, {
         context: this._context,
@@ -65,6 +64,6 @@ export class WhiteSpaceComponent
    * i.e. cancelling any pending remote calls, removing listeners, etc.
    */
   public destroy(): void {
-    // Add code to cleanup control if necessary
+    ReactDOM.unmountComponentAtNode(this._container);
   }
 }
